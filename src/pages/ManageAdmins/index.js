@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Stack, Typography, Button, Card } from '@mui/material'
 import { Add as AddIcon } from '@mui/icons-material'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 import { DataGrid } from '@mui/x-data-grid'
 
 import { CLASSROOM_ROLE } from 'src/utils/constants'
@@ -14,19 +14,20 @@ const columns = [
   { field: 'username', headerName: 'Username', width: 200 },
   { field: 'email', headerName: 'Email', width: 200 },
   { field: 'createdAt', headerName: 'Create Time', width: 200 },
+  { field: 'status', headerName: 'Status', width: 200 },
   {
     field: 'action',
     headerName: '',
     width: 100,
     renderCell: (params) => {
-      console.log(params)
-      return <MoreMenu />
+      return <MoreMenu userId={params.row.id} />
     },
   },
 ]
 
 const ManageAdmins = () => {
   const [adminData, setAdminData] = useState([])
+  const history = useHistory()
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -55,7 +56,7 @@ const ManageAdmins = () => {
           <Button
             variant="contained"
             component={RouterLink}
-            to="#"
+            onClick={() => history.push('/create-admins')}
             startIcon={<AddIcon />}
           >
             New Admin

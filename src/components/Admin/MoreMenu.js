@@ -24,13 +24,6 @@ export default function UserMoreMenu({ userId }) {
   const ref = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleDeleteUser = async () => {
-    try {
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return (
     <Box sx={{ justifyContent: 'center' }}>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
@@ -47,26 +40,16 @@ export default function UserMoreMenu({ userId }) {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem sx={{ color: 'text.secondary' }} onClick={handleDeleteUser}>
-          <ListItemIcon>
-            <DeleteIcon width={24} height={24} />
-          </ListItemIcon>
-          <ListItemText
-            primary="Delete"
-            primaryTypographyProps={{ variant: 'body2' }}
-          />
-        </MenuItem>
-
         <MenuItem
           component={RouterLink}
-          to="#"
+          to={`/admin-details/${userId}`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>
             <EditIcon width={24} height={24} />
           </ListItemIcon>
           <ListItemText
-            primary="Edit"
+            primary="View Detail"
             primaryTypographyProps={{ variant: 'body2' }}
           />
         </MenuItem>

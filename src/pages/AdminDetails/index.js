@@ -49,7 +49,6 @@ const WrapInforInput = styled(Paper)(({ theme }) => ({
 
 export default function Profile() {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.user)
   const [isEdit, setIsEdit] = useState(false)
   const [inputDisabled, setInputDisabled] = useState(true)
 
@@ -57,6 +56,7 @@ export default function Profile() {
     setIsEdit(true)
     setInputDisabled(false)
   }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -71,6 +71,7 @@ export default function Profile() {
     setIsEdit(false)
     setInputDisabled(true)
   }
+
   const showButtonEdit = () => {
     return (
       <Button onClick={handleEdit} variant="contained">
@@ -78,6 +79,7 @@ export default function Profile() {
       </Button>
     )
   }
+
   const showTextInput = (field, value) => {
     return (
       <TextField
@@ -89,6 +91,7 @@ export default function Profile() {
       ></TextField>
     )
   }
+
   return (
     <Layout>
       <Container component="main" maxWidth="sm">
