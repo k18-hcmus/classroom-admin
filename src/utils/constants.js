@@ -1,0 +1,13 @@
+export const ACCOUNT_STATUS = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+}
+export const CLASSROOM_ROLE = {
+  STUDENT: 'STUDENT',
+  TEACHER: 'TEACHER',
+  ADMIN: 'ADMIN',
+}
+export const CLASSROOM_STATUS = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+}
