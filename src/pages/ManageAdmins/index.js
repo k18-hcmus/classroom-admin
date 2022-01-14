@@ -31,7 +31,7 @@ const ManageAdmins = () => {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const response = await axiosClient.get('/api/user/all', {
+      const response = await axiosClient.get('/api/user/admin/users', {
         params: {
           roles: [CLASSROOM_ROLE.ADMIN],
         },

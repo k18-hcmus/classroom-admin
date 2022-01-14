@@ -42,8 +42,16 @@ export default function Routes() {
             path="/classrooms/:id/detail-grades"
             component={DetailGrades}
           />
-          <ProtectedRoute path="/manage-admins" component={ManageAdmins} />
-          <ProtectedRoute path="/admin-details" component={AdminDetails} />
+          <ProtectedRoute
+            exact
+            path="/manage-admins"
+            component={ManageAdmins}
+          />
+          <ProtectedRoute
+            exact
+            path="/admin-details/:id"
+            component={AdminDetails}
+          />
 
           <ProtectedRoute path="/create-admins" component={CreateAdmin} />
           <Route path="/no-permission" component={NotHavePermission} />

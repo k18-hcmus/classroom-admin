@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Box,
   Container,
@@ -6,16 +6,15 @@ import {
   Typography,
   Grid,
   Paper,
-  TextField,
-  Button,
+  CircularProgress,
 } from '@mui/material'
-import { createTheme } from '@mui/material/styles'
 import { styled } from '@mui/styles'
-import Layout from '../../Layout/Layout'
-import { useDispatch, useSelector } from 'react-redux'
-import { updateUser } from 'src/redux/userSlice'
-import { showErrMsg } from '../../utils/Notifications'
+import { useParams } from 'react-router-dom'
+import Layout from 'src/Layout/Layout'
+import { useDispatch } from 'react-redux'
 import accountDefault from 'src/_mocks_/account'
+import axiosClient from 'src/axiosClient'
+import { useSnackbar } from 'notistack'
 
 const MyBox = styled(Box)({
   borderRadius: 3,
@@ -48,47 +47,35 @@ const WrapInforInput = styled(Paper)(({ theme }) => ({
 }))
 
 export default function Profile() {
-  const dispatch = useDispatch()
-  const [isEdit, setIsEdit] = useState(false)
-  const [inputDisabled, setInputDisabled] = useState(true)
+  const [user, setUser] = useState({})
+  const [loading, setLoading] = useState(true)
+  const { id } = useParams()
+  const { enqueueSnackbar } = useSnackbar()
 
-  const handleEdit = () => {
-    setIsEdit(true)
-    setInputDisabled(false)
-  }
+  useEffect(() => {
+    const fetchAPI = async () => {
+      try {
+        const response = await axiosClient.get(`/api/user/${id}`)
+        setUser(response.data)
+      } catch (error) {
+        enqueueSnackbar(`Error when fetch user with id: ${id}`, {
+          variant: 'error',
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    dispatch(
-      updateUser({
-        firstName: data.get('firstName'),
-        lastName: data.get('lastName'),
-        phone: data.get('phone'),
-        studentId: data.get('studentId'),
-      })
-    )
-    setIsEdit(false)
-    setInputDisabled(true)
-  }
+    fetchAPI()
+  }, [])
 
-  const showButtonEdit = () => {
+  if (loading) {
     return (
-      <Button onClick={handleEdit} variant="contained">
-        Edit Profile
-      </Button>
-    )
-  }
-
-  const showTextInput = (field, value) => {
-    return (
-      <TextField
-        id={field}
-        name={field}
-        fullWidth
-        variant="standard"
-        defaultValue={value}
-      ></TextField>
+      <Layout>
+        <Container component="main" maxWidth="sm">
+          <CircularProgress />
+        </Container>
+      </Layout>
     )
   }
 
@@ -120,15 +107,13 @@ export default function Profile() {
           {/* Label Information */}
           <Grid item>
             <LabelBox component="h1" variant="h5" mt={2}>
-              Information
+              Admin Details
             </LabelBox>
           </Grid>
-          <Grid item>{isEdit === false && showButtonEdit()}</Grid>
         </Grid>
 
         <MyBox
           component="form"
-          onSubmit={handleSubmit}
           noValidate
           sx={{
             display: 'flex',
@@ -136,38 +121,6 @@ export default function Profile() {
             alignItems: 'center',
           }}
         >
-          {/* Input first name */}
-          <InputBox>
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <LabelInput elevation={0}>First Name</LabelInput>
-              </Grid>
-              <Grid item xs={8}>
-                <WrapInforInput elevation={0}>
-                  {isEdit
-                    ? showTextInput('firstName', user.firstName)
-                    : user.firstName}
-                </WrapInforInput>
-              </Grid>
-            </Grid>
-          </InputBox>
-          {/* Input last name */}
-          <InputBox>
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <LabelInput elevation={0}>Last Name</LabelInput>
-              </Grid>
-              <Grid item xs={8}>
-                <WrapInforInput elevation={0}>
-                  {isEdit
-                    ? showTextInput('lastName', user.lastName)
-                    : user.lastName}
-                </WrapInforInput>
-              </Grid>
-            </Grid>
-          </InputBox>
-
-          {/* Input username */}
           <InputBox>
             <Grid container spacing={2}>
               <Grid item xs={4}>
@@ -179,20 +132,6 @@ export default function Profile() {
             </Grid>
           </InputBox>
 
-          {/* Input Phone number */}
-          <InputBox>
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <LabelInput elevation={0}>Phone Number</LabelInput>
-              </Grid>
-              <Grid item xs={8}>
-                <WrapInforInput elevation={0}>
-                  {isEdit ? showTextInput('phone', user.phone) : user.phone}
-                </WrapInforInput>
-              </Grid>
-            </Grid>
-          </InputBox>
-          {/* Input Email */}
           <InputBox>
             <Grid container spacing={2}>
               <Grid item xs={4}>
@@ -203,9 +142,50 @@ export default function Profile() {
               </Grid>
             </Grid>
           </InputBox>
-          <Button disabled={inputDisabled} type="submit" variant="contained">
-            Save changes
-          </Button>
+
+          <InputBox>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <LabelInput elevation={0}>First Name</LabelInput>
+              </Grid>
+              <Grid item xs={8}>
+                <WrapInforInput elevation={0}>{user.firstName}</WrapInforInput>
+              </Grid>
+            </Grid>
+          </InputBox>
+
+          <InputBox>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <LabelInput elevation={0}>Last Name</LabelInput>
+              </Grid>
+              <Grid item xs={8}>
+                <WrapInforInput elevation={0}>{user.lastName}</WrapInforInput>
+              </Grid>
+            </Grid>
+          </InputBox>
+
+          <InputBox>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <LabelInput elevation={0}>Phone</LabelInput>
+              </Grid>
+              <Grid item xs={8}>
+                <WrapInforInput elevation={0}>{user.phone}</WrapInforInput>
+              </Grid>
+            </Grid>
+          </InputBox>
+
+          <InputBox>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <LabelInput elevation={0}>Status</LabelInput>
+              </Grid>
+              <Grid item xs={8}>
+                <WrapInforInput elevation={0}>{user.status}</WrapInforInput>
+              </Grid>
+            </Grid>
+          </InputBox>
         </MyBox>
       </Container>
     </Layout>
