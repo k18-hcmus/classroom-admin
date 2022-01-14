@@ -7,12 +7,22 @@ import { DataGrid } from '@mui/x-data-grid'
 import { CLASSROOM_ROLE } from 'src/utils/constants'
 import Layout from 'src/Layout/Layout'
 import axiosClient from 'src/axiosClient'
+import MoreMenu from 'src/components/Admin/MoreMenu'
 
 const columns = [
   { field: 'id', headerName: 'ID' },
   { field: 'username', headerName: 'Username', width: 200 },
   { field: 'email', headerName: 'Email', width: 200 },
   { field: 'createdAt', headerName: 'Create Time', width: 200 },
+  {
+    field: 'action',
+    headerName: '',
+    width: 100,
+    renderCell: (params) => {
+      console.log(params)
+      return <MoreMenu />
+    },
+  },
 ]
 
 const ManageAdmins = () => {
