@@ -15,9 +15,14 @@ import Profile from './pages/Profile'
 import DetailGrades from './pages/DetailGrade'
 import NotHavePermission from 'src/components/NotHavePermission'
 import ManageAdmins from 'src/pages/ManageAdmins'
+<<<<<<< HEAD
 import CreateAdmin from 'src/pages/CreateAdmin'
 import AdminDetails from 'src/pages/AdminDetails'
 
+=======
+import ManageUsers from './pages/ManageClasses'
+import UserList from './pages/UserList'
+>>>>>>> 33de060 (viewListClass-editClass)
 export default function Routes() {
   return (
     <Router>
@@ -54,6 +59,12 @@ export default function Routes() {
           />
 
           <ProtectedRoute path="/create-admins" component={CreateAdmin} />
+            path="/classrooms/:id/user-list"
+            component={UserList}
+          />
+          <ProtectedRoute path="/manage-admins" component={ManageAdmins} />
+          <ProtectedRoute path="/manage-classrooms" component={ManageUsers} />
+
           <Route path="/no-permission" component={NotHavePermission} />
           <Route path="*" component={NotFound} />
         </Switch>
