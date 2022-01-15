@@ -17,6 +17,8 @@ import NotHavePermission from 'src/components/NotHavePermission'
 import ManageAdmins from 'src/pages/ManageAdmins'
 import CreateAdmin from 'src/pages/CreateAdmin'
 import AdminDetails from 'src/pages/AdminDetails'
+import ManageUsers from 'src/pages/ManageUsers'
+import UserDetails from 'src/pages/UserDetails'
 
 export default function Routes() {
   return (
@@ -52,7 +54,12 @@ export default function Routes() {
             path="/admin-details/:id"
             component={AdminDetails}
           />
-
+          <ProtectedRoute exact path="/manage-users" component={ManageUsers} />
+          <ProtectedRoute
+            exact
+            path="/user-details/:id"
+            component={UserDetails}
+          />
           <ProtectedRoute path="/create-admins" component={CreateAdmin} />
           <Route path="/no-permission" component={NotHavePermission} />
           <Route path="*" component={NotFound} />
