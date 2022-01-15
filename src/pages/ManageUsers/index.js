@@ -2,39 +2,65 @@ import React, { useState, useEffect } from 'react'
 import { Container, Stack, Typography, Card } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { DataGrid } from '@mui/x-data-grid'
+import { useSnackbar } from 'notistack'
+import get from 'lodash/get'
 
 import Layout from 'src/Layout/Layout'
 import axiosClient from 'src/axiosClient'
 import MoreMenu from 'src/components/User/MoreMenu'
 
-const columns = [
-  { field: 'id', headerName: 'ID' },
-  { field: 'username', headerName: 'Username', width: 200 },
-  { field: 'email', headerName: 'Email', width: 200 },
-  { field: 'createdAt', headerName: 'Create Time', width: 200 },
-  { field: 'status', headerName: 'Status', width: 100 },
-  { field: 'studentId', headerName: 'Student ID', width: 150 },
-  {
-    field: 'action',
-    headerName: '',
-    width: 100,
-    renderCell: (params) => {
-      return <MoreMenu userId={params.row.id} />
-    },
-  },
-]
-
-const ManageAdmins = () => {
-  const [adminData, setAdminData] = useState([])
+const ManageUsers = () => {
+  const [userData, setUserData] = useState([])
   const history = useHistory()
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     const fetchAPI = async () => {
       const response = await axiosClient.get('/api/user/admin/users')
-      setAdminData(response.data)
+      setUserData(response.data)
     }
     fetchAPI()
   }, [])
+
+  const columns = [
+    { field: 'id', headerName: 'ID' },
+    { field: 'username', headerName: 'Username', width: 200 },
+    { field: 'email', headerName: 'Email', width: 200 },
+    { field: 'createdAt', headerName: 'Create Time', width: 200 },
+    { field: 'status', headerName: 'Status', width: 100 },
+    { field: 'studentId', headerName: 'Student ID', width: 150 },
+    {
+      field: 'action',
+      headerName: '',
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <MoreMenu
+            user={params.row}
+            handleChangeUserStatus={handleChangeUserStatus}
+          />
+        )
+      },
+    },
+  ]
+
+  const handleChangeUserStatus = async (userId, status) => {
+    try {
+      const response = await axiosClient.put(`/api/user/${userId}`, { status })
+      const updatedUser = get(response, 'data.user')
+      setUserData((prevState) => {
+        const updatingUserData = [...prevState]
+        const updatedUserIndex = prevState.findIndex(
+          (user) => user.id === updatedUser.id
+        )
+        updatingUserData[updatedUserIndex] = updatedUser
+        return updatingUserData
+      })
+      enqueueSnackbar('Success.', { variant: 'success' })
+    } catch (error) {
+      enqueueSnackbar('Error.', { variant: 'error' })
+    }
+  }
 
   return (
     <Layout>
@@ -52,7 +78,7 @@ const ManageAdmins = () => {
 
         <Card>
           <div style={{ height: 700, width: '100%' }}>
-            <DataGrid rows={adminData} columns={columns} pageSize={12} />
+            <DataGrid rows={userData} columns={columns} pageSize={12} />
           </div>
         </Card>
       </Container>
@@ -60,4 +86,4 @@ const ManageAdmins = () => {
   )
 }
 
-export default ManageAdmins
+export default ManageUsers

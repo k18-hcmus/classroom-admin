@@ -14,9 +14,7 @@ import { LoadingButton } from '@mui/lab'
 import { styled } from '@mui/styles'
 import * as Yup from 'yup'
 import { useFormik, FormikProvider } from 'formik'
-import { useDispatch } from 'react-redux'
 import Layout from 'src/Layout/Layout'
-import { updateUser } from 'src/redux/userSlice'
 import accountDefault from 'src/_mocks_/account'
 import { useSnackbar } from 'notistack'
 import { useParams } from 'react-router-dom'
@@ -97,7 +95,7 @@ export default function UserDetails() {
     },
     enableReinitialize: true,
     validationSchema: UpdateUserSchema,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
       try {
         console.log(values)
         const response = await axiosClient.put(`/api/user/${id}`, values)

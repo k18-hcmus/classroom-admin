@@ -1,6 +1,7 @@
 export const ACCOUNT_STATUS = {
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
+  BAN: 'BAN',
 }
 export const CLASSROOM_ROLE = {
   STUDENT: 'STUDENT',
@@ -10,4 +11,5 @@ export const CLASSROOM_ROLE = {
 export const CLASSROOM_STATUS = {
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
+  BAN: 'BAN',
 }
