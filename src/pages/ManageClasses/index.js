@@ -13,7 +13,6 @@ import { useHistory } from 'react-router-dom'
 import ConfirmDialog from './ConfirmDialog'
 
 function ManageClasses() {
-  const [users, setUsers] = useState()
   const [classrooms, setClassrooms] = useState()
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
@@ -23,8 +22,8 @@ function ManageClasses() {
   const [idClassroom, setIdClassroom] = useState()
   let history = useHistory()
   useEffect(() => {
-    async function FetchClassrooms() {
-      const result = await axiosClient.get('/api/classrooms/all-classrooms')
+    async function fetchClassrooms() {
+      const result = await axiosClient.get('/api/classrooms/admin/classrooms')
 
       const editTime = result.data.map((classroom) => {
         return {
@@ -34,9 +33,8 @@ function ManageClasses() {
       })
       setClassrooms(editTime)
     }
-    return FetchClassrooms()
+    return fetchClassrooms()
   }, [])
-  const handleDeleClasses = () => {}
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Classroom', width: 130 },
@@ -78,7 +76,6 @@ function ManageClasses() {
       },
     },
   ]
-  console.log('idClass:', idClassroom)
   return (
     <Layout>
       <Box sx={{ flexGrow: 1 }}>
