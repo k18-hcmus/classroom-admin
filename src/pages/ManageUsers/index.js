@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Stack, Typography, Button, Card } from '@mui/material'
-import { Add as AddIcon } from '@mui/icons-material'
-import { Link as RouterLink, useHistory } from 'react-router-dom'
+import { Container, Stack, Typography, Card } from '@mui/material'
+import { useHistory } from 'react-router-dom'
 import { DataGrid } from '@mui/x-data-grid'
 
-import { CLASSROOM_ROLE } from 'src/utils/constants'
 import Layout from 'src/Layout/Layout'
 import axiosClient from 'src/axiosClient'
-import MoreMenu from 'src/components/Admin/MoreMenu'
+import MoreMenu from 'src/components/User/MoreMenu'
 
 const columns = [
   { field: 'id', headerName: 'ID' },
   { field: 'username', headerName: 'Username', width: 200 },
   { field: 'email', headerName: 'Email', width: 200 },
   { field: 'createdAt', headerName: 'Create Time', width: 200 },
-  { field: 'status', headerName: 'Status', width: 200 },
+  { field: 'status', headerName: 'Status', width: 100 },
+  { field: 'studentId', headerName: 'Student ID', width: 150 },
   {
     field: 'action',
     headerName: '',
@@ -31,11 +30,7 @@ const ManageAdmins = () => {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const response = await axiosClient.get('/api/user/admin/users', {
-        params: {
-          roles: [CLASSROOM_ROLE.ADMIN],
-        },
-      })
+      const response = await axiosClient.get('/api/user/admin/users')
       setAdminData(response.data)
     }
     fetchAPI()
@@ -51,15 +46,8 @@ const ManageAdmins = () => {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Admin
+            Users
           </Typography>
-          <Button
-            variant="contained"
-            onClick={() => history.push('/create-admins')}
-            startIcon={<AddIcon />}
-          >
-            New Admin
-          </Button>
         </Stack>
 
         <Card>
