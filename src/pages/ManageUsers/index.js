@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Stack, Typography, Card } from '@mui/material'
-import { useHistory } from 'react-router-dom'
 import { DataGrid } from '@mui/x-data-grid'
 import { useSnackbar } from 'notistack'
 import get from 'lodash/get'
@@ -11,7 +10,6 @@ import MoreMenu from 'src/components/User/MoreMenu'
 
 const ManageUsers = () => {
   const [userData, setUserData] = useState([])
-  const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
@@ -38,6 +36,7 @@ const ManageUsers = () => {
           <MoreMenu
             user={params.row}
             handleChangeUserStatus={handleChangeUserStatus}
+            handleDeleteUser={handleDeleteUser}
           />
         )
       },
@@ -55,6 +54,19 @@ const ManageUsers = () => {
         )
         updatingUserData[updatedUserIndex] = updatedUser
         return updatingUserData
+      })
+      enqueueSnackbar('Success.', { variant: 'success' })
+    } catch (error) {
+      enqueueSnackbar('Error.', { variant: 'error' })
+    }
+  }
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      await axiosClient.delete(`/api/user/${userId}`)
+      setUserData((prevState) => {
+        const updatingUserData = [...prevState]
+        return updatingUserData.filter((u) => u.id !== userId)
       })
       enqueueSnackbar('Success.', { variant: 'success' })
     } catch (error) {

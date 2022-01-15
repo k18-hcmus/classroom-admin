@@ -12,6 +12,7 @@ import {
 import {
   MoreVert as MoreVertIcon,
   Edit as EditIcon,
+  Delete as DeleteIcon,
   Block as BlockIcon,
 } from '@mui/icons-material'
 import { ACCOUNT_STATUS } from 'src/utils/constants'
@@ -19,15 +20,21 @@ import { ACCOUNT_STATUS } from 'src/utils/constants'
 import ConfirmDialog from 'src/components/ConfirmDialog'
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu({ user, handleChangeUserStatus }) {
+export default function UserMoreMenu({
+  user,
+  handleChangeUserStatus,
+  handleDeleteUser,
+}) {
   const userId = user.id
   const ref = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [isOpenConfirmDialog, setIsOpenConfirmDialog] = useState(false)
+  const [isOpenConfirmBanDialog, setIsOpenConfirmBanDialog] = useState(false)
+  const [isOpenConfirmDeleteDialog, setIsOpenConfirmDeleteDialog] =
+    useState(false)
 
-  const handleClickBanUser = () => setIsOpenConfirmDialog(true)
+  const handleClickBanUser = () => setIsOpenConfirmBanDialog(true)
 
-  const handleCloseBanDialog = () => setIsOpenConfirmDialog(false)
+  const handleCloseBanDialog = () => setIsOpenConfirmBanDialog(false)
 
   const handleConfirmBanDialog = async () => {
     if (isUserBanned) {
@@ -35,7 +42,17 @@ export default function UserMoreMenu({ user, handleChangeUserStatus }) {
     } else {
       await handleChangeUserStatus(userId, ACCOUNT_STATUS.BAN)
     }
-    setIsOpenConfirmDialog(false)
+    handleCloseBanDialog()
+  }
+
+  const handleClickDeleteUser = () => setIsOpenConfirmDeleteDialog(true)
+
+  const handleCloseDeleteDialog = () => setIsOpenConfirmDeleteDialog(false)
+
+  const handleConfirmDeleteDialog = async () => {
+    await handleDeleteUser(userId)
+    handleCloseDeleteDialog()
+    setIsOpen(false)
   }
 
   const isUserBanned = user.status === ACCOUNT_STATUS.BAN
@@ -78,9 +95,21 @@ export default function UserMoreMenu({ user, handleChangeUserStatus }) {
             primaryTypographyProps={{ variant: 'body2' }}
           />
         </MenuItem>
+        <MenuItem
+          sx={{ color: 'text.secondary' }}
+          onClick={handleClickDeleteUser}
+        >
+          <ListItemIcon>
+            <DeleteIcon width={24} height={24} />
+          </ListItemIcon>
+          <ListItemText
+            primary="Delete User"
+            primaryTypographyProps={{ variant: 'body2' }}
+          />
+        </MenuItem>
       </Menu>
       <ConfirmDialog
-        open={isOpenConfirmDialog}
+        open={isOpenConfirmBanDialog}
         handleClose={handleCloseBanDialog}
         handleConfirm={handleConfirmBanDialog}
         title={
@@ -88,6 +117,12 @@ export default function UserMoreMenu({ user, handleChangeUserStatus }) {
             ? `Un Ban user ${user.username}?`
             : `Ban user ${user.username}?`
         }
+      />
+      <ConfirmDialog
+        open={isOpenConfirmDeleteDialog}
+        handleClose={handleCloseBanDialog}
+        handleConfirm={handleConfirmDeleteDialog}
+        title={`Delete User ${user.username}?`}
       />
     </Box>
   )
