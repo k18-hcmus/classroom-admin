@@ -20,6 +20,8 @@ import AdminDetails from 'src/pages/AdminDetails'
 import ManageUsers from 'src/pages/ManageUsers'
 import UserDetails from 'src/pages/UserDetails'
 
+import ManageUsers from './pages/ManageClasses'
+import UserList from './pages/UserList'
 export default function Routes() {
   return (
     <Router>
@@ -60,7 +62,14 @@ export default function Routes() {
             path="/user-details/:id"
             component={UserDetails}
           />
+
           <ProtectedRoute path="/create-admins" component={CreateAdmin} />
+          <ProtectedRoute
+            path="/classrooms/:id/user-list"
+            component={UserList}
+          />
+          <ProtectedRoute path="/manage-admins" component={ManageAdmins} />
+          <ProtectedRoute path="/manage-classrooms" component={ManageUsers} />
           <Route path="/no-permission" component={NotHavePermission} />
           <Route path="*" component={NotFound} />
         </Switch>

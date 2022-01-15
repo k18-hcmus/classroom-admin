@@ -25,7 +25,7 @@ export default function TemporaryDrawer() {
     {
       text: 'Classes',
       icon: <ClassIcon />,
-      path: '/',
+      path: '/manage-classrooms',
     },
     {
       text: 'Admins',
