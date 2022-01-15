@@ -32,6 +32,11 @@ export default function TemporaryDrawer() {
       icon: <ClassIcon />,
       path: '/manage-admins',
     },
+    {
+      text: 'Users',
+      icon: <ClassIcon />,
+      path: '/manage-users',
+    },
   ]
   const toggleDrawer = (anchor, open) => (event) => {
     if (
