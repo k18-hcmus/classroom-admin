@@ -34,6 +34,7 @@ const ManageUsers = () => {
       renderCell: (params) => {
         return (
           <MoreMenu
+            type="user"
             user={params.row}
             handleChangeUserStatus={handleChangeUserStatus}
             handleDeleteUser={handleDeleteUser}

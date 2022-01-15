@@ -21,6 +21,7 @@ import ConfirmDialog from 'src/components/ConfirmDialog'
 // ----------------------------------------------------------------------
 
 export default function UserMoreMenu({
+  type,
   user,
   handleChangeUserStatus,
   handleDeleteUser,
@@ -75,7 +76,7 @@ export default function UserMoreMenu({
       >
         <MenuItem
           component={RouterLink}
-          to={`/user-details/${userId}`}
+          to={`/${type}-details/${userId}`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>
@@ -120,7 +121,7 @@ export default function UserMoreMenu({
       />
       <ConfirmDialog
         open={isOpenConfirmDeleteDialog}
-        handleClose={handleCloseBanDialog}
+        handleClose={handleCloseDeleteDialog}
         handleConfirm={handleConfirmDeleteDialog}
         title={`Delete User ${user.username}?`}
       />
