@@ -70,11 +70,12 @@ const UserList = () => {
   const [exportData, setExportData] = useState([])
   const [dataArr, setDataArr] = useState([])
   const { enqueueSnackbar } = useSnackbar()
-
   useEffect(() => {
     const fetchUserClassrooms = async () => {
       try {
-        const response = await axiosClient.get(`/api/classrooms/${id}/users`)
+        const response = await axiosClient.get(
+          `/api/classrooms/${id}/admin/users`
+        )
         setUsers(response.data)
         const UserExport = response.data.filter(
           (user) => user.role === 'STUDENT'
