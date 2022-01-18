@@ -81,7 +81,6 @@ const UserList = () => {
           (user) => user.role === 'STUDENT'
         )
         setExportData(UserExport)
-        console.log('id:', id)
       } catch (error) {
         setErrorMsg(error.response.data.message)
       }
