@@ -1,7 +1,15 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import { Grid, Box, Button } from '@mui/material'
+import {
+  Grid,
+  Box,
+  Button,
+  Card,
+  Container,
+  Stack,
+  Typography,
+} from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Layout from 'src/Layout/Layout'
@@ -28,7 +36,7 @@ function ManageClasses() {
       const editTime = result.data.map((classroom) => {
         return {
           ...classroom,
-          updatedAt: format(new Date(classroom.updatedAt), 'MMM,dd,yyyy'),
+          createdAt: format(new Date(classroom.createdAt), 'MMM,dd,yyyy'),
         }
       })
       setClassrooms(editTime)
@@ -38,7 +46,7 @@ function ManageClasses() {
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Classroom', width: 130 },
-    { field: 'updatedAt', headerName: 'Created_at', width: 170 },
+    { field: 'createdAt', headerName: 'Created Time', width: 170 },
     {
       field: 'teacher',
       headerName: 'Teacher',
@@ -77,29 +85,56 @@ function ManageClasses() {
     },
   ]
   return (
+    // <Layout>
+    //   <Box sx={{ flexGrow: 1 }}>
+    //     <Grid container spacing={3}>
+    //       <Grid item xs></Grid>
+    //       <Grid item xs={8} sx={{ mt: 3 }}>
+    //         <div style={{ height: 400, width: '100%' }}>
+    //           <DataGrid
+    //             rows={classrooms}
+    //             columns={columns}
+    //             pageSize={5}
+    //             rowsPerPageOptions={[5]}
+    //             disableSelectionOnClick
+    //           />
+    //           <ConfirmDialog
+    //             confirmDialog={confirmDialog}
+    //             setConfirmDialog={setConfirmDialog}
+    //             idClassroom={idClassroom}
+    //           />
+    //         </div>
+    //       </Grid>
+    //       <Grid item xs></Grid>
+    //     </Grid>
+    //   </Box>
+    // </Layout>
+
     <Layout>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={3}>
-          <Grid item xs></Grid>
-          <Grid item xs={8} sx={{ mt: 3 }}>
-            <div style={{ height: 400, width: '100%' }}>
-              <DataGrid
-                rows={classrooms}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                disableSelectionOnClick
-              />
-              <ConfirmDialog
-                confirmDialog={confirmDialog}
-                setConfirmDialog={setConfirmDialog}
-                idClassroom={idClassroom}
-              />
-            </div>
-          </Grid>
-          <Grid item xs></Grid>
-        </Grid>
-      </Box>
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
+          <Typography variant="h4" gutterBottom>
+            Manage Classrooms
+          </Typography>
+        </Stack>
+
+        <Card>
+          <div style={{ height: 400, width: '100%' }}>
+            <DataGrid
+              rows={classrooms}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              disableSelectionOnClick
+            />
+          </div>
+        </Card>
+      </Container>
     </Layout>
   )
 }

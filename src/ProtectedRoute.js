@@ -2,7 +2,7 @@ import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
-
+import LoadingPage from 'src/components/LoadingPage'
 import { selectUser, selectLoadingUser } from 'src/redux/userSlice'
 import { CLASSROOM_ROLE } from 'src/utils/constants'
 
@@ -11,7 +11,7 @@ function ProtectedRoute({ component: Component, ...restOfProps }) {
   const user = useSelector(selectUser)
 
   if (loading) {
-    return <div>'loading'</div>
+    return <LoadingPage />
   }
 
   if (isEmpty(user)) {

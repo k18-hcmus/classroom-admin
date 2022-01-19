@@ -6,12 +6,12 @@ import { Link as RouterLink, useHistory } from 'react-router-dom'
 import { DataGrid } from '@mui/x-data-grid'
 import get from 'lodash/get'
 import { useSnackbar } from 'notistack'
-
 import { CLASSROOM_ROLE } from 'src/utils/constants'
 import Layout from 'src/Layout/Layout'
 import axiosClient from 'src/axiosClient'
 import MoreMenu from 'src/components/User/MoreMenu'
 import { selectUser } from 'src/redux/userSlice'
+import format from 'date-fns/format'
 
 const ManageAdmins = () => {
   const [adminData, setAdminData] = useState([])
@@ -26,14 +26,20 @@ const ManageAdmins = () => {
           roles: [CLASSROOM_ROLE.ADMIN],
         },
       })
-      setAdminData(response.data)
+      const editTime = response.data.map((user) => {
+        return {
+          ...user,
+          createdAt: format(new Date(user.createdAt), 'MMM,dd,yyyy'),
+        }
+      })
+      setAdminData(editTime)
     }
     fetchAPI()
   }, [])
 
   const columns = [
     { field: 'id', headerName: 'ID' },
-    { field: 'username', headerName: 'Username', width: 200 },
+    { field: 'username', headerName: 'Username', width: 150 },
     { field: 'email', headerName: 'Email', width: 200 },
     { field: 'createdAt', headerName: 'Create Time', width: 200 },
     { field: 'status', headerName: 'Status', width: 200 },
@@ -107,7 +113,7 @@ const ManageAdmins = () => {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Admin
+            Manages Admins
           </Typography>
           <Button
             variant="contained"
@@ -119,8 +125,8 @@ const ManageAdmins = () => {
         </Stack>
 
         <Card>
-          <div style={{ height: 700, width: '100%' }}>
-            <DataGrid rows={adminData} columns={columns} pageSize={12} />
+          <div style={{ height: 400, width: '100%' }}>
+            <DataGrid rows={adminData} columns={columns} pageSize={5} />
           </div>
         </Card>
       </Container>

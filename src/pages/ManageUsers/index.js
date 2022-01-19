@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Stack, Typography, Card } from '@mui/material'
+import { Container, Stack, Typography, Card, Grid, Box } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useSnackbar } from 'notistack'
 import get from 'lodash/get'
-
+import format from 'date-fns/format'
 import Layout from 'src/Layout/Layout'
 import axiosClient from 'src/axiosClient'
 import MoreMenu from 'src/components/User/MoreMenu'
@@ -15,18 +15,27 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetchAPI = async () => {
       const response = await axiosClient.get('/api/user/admin/users')
-      setUserData(response.data)
+      const editTime = response.data.map((user) => {
+        return {
+          ...user,
+          createdAt: format(new Date(user.createdAt), 'MMM,dd,yyyy'),
+        }
+      })
+      setUserData(editTime)
     }
+
     fetchAPI()
   }, [])
 
   const columns = [
     { field: 'id', headerName: 'ID' },
-    { field: 'username', headerName: 'Username', width: 200 },
+    { field: 'firstName', headerName: 'First Name', width: 100 },
+    { field: 'lastName', headerName: 'Last Name', width: 100 },
+    { field: 'username', headerName: 'Username', width: 150 },
     { field: 'email', headerName: 'Email', width: 200 },
     { field: 'createdAt', headerName: 'Create Time', width: 200 },
     { field: 'status', headerName: 'Status', width: 100 },
-    { field: 'studentId', headerName: 'Student ID', width: 150 },
+    { field: 'studentId', headerName: 'Student ID', width: 100 },
     {
       field: 'action',
       headerName: '',
@@ -85,13 +94,13 @@ const ManageUsers = () => {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Users
+            Manage Users
           </Typography>
         </Stack>
 
         <Card>
-          <div style={{ height: 700, width: '100%' }}>
-            <DataGrid rows={userData} columns={columns} pageSize={12} />
+          <div style={{ height: 400, width: '100%' }}>
+            <DataGrid rows={userData} columns={columns} pageSize={5} />
           </div>
         </Card>
       </Container>

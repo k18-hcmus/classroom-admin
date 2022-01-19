@@ -31,9 +31,8 @@ export default function Routes() {
             <Login />
           </Route>
           <Route path="/" exact>
-            <Redirect to="/home" />
+            <Redirect to="/manage-classrooms" />
           </Route>
-          <ProtectedRoute exact path="/home" component={Home} />
           <ProtectedRoute path="/about" component={About} />
           <ProtectedRoute path="/profile" component={Profile} />
           <ProtectedRoute
