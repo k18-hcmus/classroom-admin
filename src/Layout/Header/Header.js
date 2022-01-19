@@ -18,32 +18,16 @@ const MyAppBar = styled(AppBar)({
 })
 
 const Header = ({ children }) => {
-  //const [anchorEl, setAnchorEl] = useState(null)
-  const history = useHistory()
-  const [anchorElClassroom, setAnchorElClassroom] = useState(null)
-
-  const handleReturnHomepage = () => {
-    history.push('/')
-  }
   return (
     <Box sx={{ flexGrow: 1, mb: 7 }}>
       <MyAppBar position="static">
         <Toolbar
           sx={{
             display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
           }}
         >
-          <HeaderWrapper>
-            {children}
-            <Button onClick={handleReturnHomepage}>
-              <Avatar src="/book-stack.png" sx={{ mr: 2 }} />
-              <Typography ml={1} variant="h6">
-                My Classroom
-              </Typography>
-            </Button>
-          </HeaderWrapper>
           <HeaderWrapperRight>
             <AccountPopover />
           </HeaderWrapperRight>
