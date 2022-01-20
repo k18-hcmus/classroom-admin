@@ -56,7 +56,7 @@ export default function SignIn() {
 
         const { user } = response.data
         dispatch(userLogin(user))
-        history.push('/home')
+        history.push('/')
       }
       if (!response.data.success) {
         setMsg({ err: response.data.message, success: '' })
